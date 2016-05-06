@@ -1,0 +1,13 @@
+---
+- name: Unzip malet source
+  unarchive: src=/etc/ansible/roles/maldet/files/maldetect-current.tar.gz dest=/tmp/
+
+- name: install maldet
+  shell: /tmp/maldetect-1.4.2/install.sh
+  args:
+    chdir: /tmp/maldetect-1.4.2
+
+- name: install cron jobs
+  copy: src=/etc/ansible/roles/maldet/files/maldetcron dest=/etc/cron.daily/maldet owner=root group=root mode=0755
+  notify: crond restart
+

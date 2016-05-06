@@ -1,0 +1,13 @@
+---
+- name: create user home direcrory
+  file: path=/www/{{ siteurl }} state=directory  mode="u=rwx,g=rx,o=rx"
+
+- name: added user for vhost / sftp access
+  user: name={{ hname }} shell=/bin/bash home=/www/{{ siteurl }}/ password={{ upassw }}
+
+- name: create site direcrory
+  file: path=/www/{{ siteurl }}/httpdocs state=directory recurse=yes owner={{ hname }} group={{ hname }} mode="u=rwx,g=rx,o=rx"
+
+- name: create logs directory
+  file: path=/www/{{ siteurl }}/logs state=directory owner={{ hname }} group={{ hname }} mode="u=rwx,g=rx,o=rx"
+

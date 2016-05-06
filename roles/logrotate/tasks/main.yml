@@ -1,0 +1,9 @@
+---
+- name: Added costum httpd logrotate template 
+  template: src=/etc/ansible/roles/logrotate/templates/httpd.j2 dest=/etc/logrotate.d/httpd backup=yes 
+
+- name: Added elasticsearch template to rotate
+  copy: src=/etc/ansible/roles/logrotate/files/elasticsearch dest=/etc/logrotate.d/elasticsearch owner=root group=root mode="u=rw,g=r,o=r"
+
+  notify:
+   - rsyslog restart

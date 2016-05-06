@@ -1,0 +1,13 @@
+---
+- name: Copy patch file to remoute hosts
+  copy: > 
+    src=/etc/ansible/roles/fail2ban/files/fail2ban.patch
+    dest=/tmp/fail2ban.patch
+
+- name: Configure fail2ban
+  patch: >
+    src=/tmp/fail2ban.patch
+    dest=/etc/fail2ban/jail.conf
+  notify: restart fail2ban
+
+

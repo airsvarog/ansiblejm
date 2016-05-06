@@ -1,0 +1,18 @@
+---
+php_expose_php: "Off"
+php_date_timezone: "Europe/Berlin"
+php_packages:
+  - php-mcrypt
+  - php-pecl-igbinary
+  - php-pecl-memcached
+  - php-soap
+  - php-process
+  - php-pecl-msgpack
+  - php-mysql
+  - php-mbstring
+  - php-intl
+  - php
+  - php54-php-intl
+  - php54-php-pecl-imagick
+  - php54-php-gd
+  - php-pecl-apc

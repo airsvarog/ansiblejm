@@ -1,0 +1,16 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+[megaukjobs]
+megaukjobs.com ansible_ssh_port=5012 ansible_ssh_host=148.251.122.40 ansible_ssh_user=root
+
+[jmstandalone:vars]
+ntp_server=europe.pool.ntp.org
+http_port=80 maxRequestsPerChild=350

@@ -1,0 +1,12 @@
+---
+- name: postfix startup
+  service: name=postfix state=restarted enabled=yes 
+
+- name: fail2ban startup
+  service: name=fail2ban enabled=yes 
+
+- name: restart sshd
+  service: name=sshd state=restarted enabled=yes
+
+- name: restart iptables
+  service: name=iptables state=restarted enabled=yes

@@ -1,0 +1,16 @@
+---
+- name: install python-passlib if not installed
+  yum: name=python-passlib enablerepo=epel,remi state=present
+
+- name: make passswd
+##echo -e "specialjobsuk:`perl -le 'print crypt("9GzJDw2I","salt")'`" > /var/lib/monitorix/htpasswd
+  htpasswd: path=/var/lib/monitorix/htpasswd name={{ hname }} password={{ monpasswd }} owner=root group=root mode=0644
+
+- name: apply config template
+  template: src=/etc/ansible/roles/monitorix/templates/monitorix.conf.j2 dest=/etc/monitorix/monitorix.conf owner=root group=root mode=0644 backup=yes
+  notify: restart monitorix
+
+- name: copy apache status template vhosts
+  copy: src=/etc/ansible/roles/monitorix/files/status.conf dest=/etc/httpd/conf.d/status.conf
+  notify: restart httpd
+

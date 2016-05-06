@@ -1,0 +1,27 @@
+---
+- hosts: HETZNERSAS
+  tasks:
+    - name: get ips
+#      command: w
+      setup: "filter=ansible_eth[0-2]"
+      register: result
+      ignore_errors: True
+
+    - debug var=result
+
+#    - debug: msg="it failed"
+#      when: result|failed
+
+  # in most cases you'll want a handler, but if you want to do something right now, this is nice
+#    - debug: msg="it changed"
+#      when: result|changed
+
+#    - debug: msg="it succeeded"
+#      when: result|success
+
+#    - debug: msg="it was skipped"
+#      when: result|skipped
+
+
+    - name: get uptime
+      command: w

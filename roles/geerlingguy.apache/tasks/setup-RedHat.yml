@@ -1,0 +1,15 @@
+---
+- name: Ensure Apache is installed.
+  yum:
+    name: "{{ item }}"
+    state: installed
+    enablerepo: "{{ apache_enablerepo }}"
+  with_items: apache_packages
+
+#- name: Install mod_php
+#  yum: 
+#    name: "php"
+#    state: installed
+#    enablerepo: "{{ apache_enablerepo }}"
+#  with_items: apache_packages
+

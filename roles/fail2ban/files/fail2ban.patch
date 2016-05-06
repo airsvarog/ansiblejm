@@ -1,0 +1,53 @@
+--- jail.conf.orig	2014-08-20 17:46:14.000000000 +0200
++++ jail.conf.upd	2015-02-11 12:16:00.000000000 +0100
+@@ -29,7 +29,7 @@
+ # "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
+ # ban a host which matches an address in this list. Several addresses can be
+ # defined using space separator.
+-ignoreip = 127.0.0.1/8
++ignoreip = 127.0.0.1/8 91.232.178.0/23
+ 
+ # External command that will take an tagged arguments to ignore, e.g. <ip>,
+ # and return true if the IP is to be ignored. False otherwise.
+@@ -77,7 +77,7 @@
+ 
+ [pam-generic]
+ 
+-enabled = false
++enabled = true
+ filter  = pam-generic
+ action  = iptables-allports[name=pam,protocol=all]
+ logpath = /var/log/secure
+@@ -95,7 +95,7 @@
+ 
+ enabled  = true
+ filter   = sshd
+-action   = iptables[name=SSH, port=ssh, protocol=tcp]
++action   = iptables[name=SSH, port=5012, protocol=tcp]
+            sendmail-whois[name=SSH, dest=you@example.com, sender=fail2ban@example.com, sendername="Fail2Ban"]
+ logpath  = /var/log/secure
+ maxretry = 5
+@@ -105,7 +105,7 @@
+ 
+ enabled  = false
+ filter   = sshd-ddos
+-action   = iptables[name=SSHDDOS, port=ssh, protocol=tcp]
++action   = iptables[name=SSHDDOS, port=5012, protocol=tcp]
+ logpath  = /var/log/sshd.log
+ maxretry = 2
+ 
+@@ -278,11 +278,11 @@
+ 
+ [apache-overflows]
+ 
+-enabled  = false
++enabled  = true
+ filter	 = apache-overflows
+ action   = iptables-multiport[name=apache-overflows,port="80,443"]
+-logpath  = /var/log/apache*/*error.log
+-           /home/www/myhomepage/error.log
++logpath  = /var/log/httpd/error_log
++#           /home/www/myhomepage/error.log
+ maxretry = 2
+ 
+ 

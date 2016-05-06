@@ -1,0 +1,65 @@
+---
+#####
+# Usage:
+#   ansible-playbook minisite.yml -i minisite -vv
+#####
+- hosts: greatukjobs.com
+  vars:
+   hname: greatukjobs
+   siteurl: greatukjobs.com
+   myip: 136.243.55.91
+###to make passwd use: mkpasswd --method=SHA-256 [PASSWD]
+   upassw: $5$UUOLtpjDgks$0spIe23El4nwiHc6koDpecS9vPwACwJA0WXW6ZTE050
+###MySQL user and db settings
+   dbname: greatuk
+   dbuser: ukusr
+   dbpassword: Ht6xTglnyVH8
+###Monitorix pass 8 charset max!!!!
+   monpasswd: zUeUfVAR
+
+   phpmyadmin_version: 4.4.3
+
+#set pakage def variables
+
+  vars_files:
+   - roles/geerlingguy.php/vars/jm.yml
+   - roles/geerlingguy.apache/vars/jm.yml
+
+##configure repos, install system soft, setup system settings
+
+
+  roles:
+##added repos
+    - { role: geerlingguy.repo-epel }
+    - { role: geerlingguy.repo-remi }
+    - { role: repo-rpmforge }
+##install system software and tuning system parm
+    - { role: preconf }
+###make separate vars!!!
+    - { role: geerlingguy.ntp }
+###using for CentOS only!
+    - { role: azmelanar.sysctl }
+###added user for site
+    - { role: vhostuser }
+###install apache web server
+    - { role: geerlingguy.apache }
+###Oracle Java for elasticsearch
+    - { role: oraclejava }
+###Install end configure elasticsearch
+    - { role: geerlingguy.elasticsearch }
+###Install end configure Percona server
+    - { role: ben.mildren.percona_mysql, percona_mysql_include_tokudb_variables: true, percona_mysql_include_jemalloc_variables: true }
+##Create db on mysql server
+    - { role: mysqluser }
+###intall php
+    - { role: geerlingguy.php }
+##Log rotate
+    - { role: logrotate }
+##fail2ban sshd role 
+##    - { role: fail2ban }
+##maldet install
+    - { role: maldet }
+##monitorix configuratin
+    - { role: monitorix }
+##PMA
+#    - { role: pma }

@@ -1,0 +1,74 @@
+---
+- name: SElinux
+  lineinfile: dest=/etc/selinux/config regexp="^SELINUX=" line="SELINUX=disabled"
+
+- name: set hostname
+  hostname: name={{ hname }} 
+
+- name: update yum repos
+  command: yum check-update
+  command: yum update -y
+
+- name: installing system software
+#  yum: pkg=$item
+  yum: name={{ item }} enablerepo=remi,epel,rpmforge state=present
+  with_items:
+    - htop
+    - sudo
+    - screen
+    - mc
+    - wget
+    - pv
+    - mlocate
+    - curl
+    - telnet
+    - dialog
+    - sysstat
+    - monitorix
+    - zlib
+    - ntpdate
+    - fail2ban
+    - postfix
+    - mtr
+    - iotop
+    - p7zip
+    - rsync
+    - gd
+    - vsftpd
+  notify:
+#    - monitorix startup
+    - postfix startup
+    - fail2ban startup
+
+- name: update mercurial to current realice 
+#  yum: pkg=$item
+  yum: name={{ item }} enablerepo=remi,epel,rpmforge,rpmforge-extras state=present
+  with_items:
+    - mercurial
+
+
+- name: install the "Development tools" package group
+  yum: name="@Development tools" state=present
+
+- name: remove the sendmail package
+  yum: name=sendmail state=absent
+
+- name: configure SSHd port 5012
+  lineinfile: 'dest=/etc/ssh/sshd_config regexp="^#Port " line="Port 5012" state=present'
+  notify: restart sshd
+
+- name: add iptables rule
+  copy: src=/etc/ansible/roles/preconf/files/iptables dest=/etc/sysconfig/iptables owner=root group=root mode=644 backup=yes
+  notify: restart iptables
+
+- name: Update bashrc global profile histoty format
+  lineinfile: 
+   dest: /etc/bashrc 
+   state: present 
+   line: 'export HISTTIMEFORMAT="%F %T "'
+
+- name: Update bashrc global profile histoty file size
+  lineinfile: 'dest=/etc/bashrc state=present line="export HISTFILESIZE=3000000"'
+
+- name: Update bashrc global profile histoty size
+  lineinfile: 'dest=/etc/bashrc state=present line="export HISTSIZE=3000000"'

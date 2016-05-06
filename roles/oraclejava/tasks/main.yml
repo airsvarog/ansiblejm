@@ -1,0 +1,12 @@
+---
+- name: Copy rmp from local PC to remoute hosts
+  copy: 
+   src: "/home/klimenko/jre-7u67-linux-x64.rpm"
+   dest: "/root/jre-7u67-linux-x64.rpm"
+   owner: root
+   group: root
+   mode: 644
+
+- name: install jre from a local file
+  yum: name=/root/jre-7u67-linux-x64.rpm state=present
+

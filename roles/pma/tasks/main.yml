@@ -1,0 +1,33 @@
+---
+- name: download the source tarball
+  get_url: url=http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-{{ phpmyadmin_version }}-all-languages.tar.gz
+           dest=/www/phpmyadmin-{{ phpmyadmin_version }}.tar.gz
+           mode=0644
+
+- name: unpack the source tarball
+#  command: /usr/bin/tar -xzf /www/phpmyadmin-{{ phpmyadmin_version }}.tar.gz -C /www/
+  unarchive: src=/www/phpmyadmin-{{ phpmyadmin_version }}.tar.gz dest=/www copy=no
+
+- name: rename the source directory
+  command: mv /www/phpMyAdmin-{{ phpmyadmin_version }}-all-languages /www/phpmyadmin
+
+- name: delete the archive
+  file: path=/www/phpmyadmin-{{ phpmyadmin_version }}.tar.gz
+        state=absent
+
+- name: check conf file
+  stat: path=/www/phpmyadmin/config.sample.inc.php
+  register: conf_sample
+
+- name: Move to working 
+  command: cp /www/phpmyadmin/config.sample.inc.php /www/phpmyadmin/config.inc.php
+  when: conf_sample.stat.exists
+
+- name: add PMA config apache
+  copy: src=/etc/ansible/roles/pma/files/pma.conf dest=/etc/httpd/conf.d/pma.conf owner=root group=root mode=644 backup=yes
+
+- name: add PMA config apache name
+  template: src=/etc/ansible/roles/pma/templates/pma.conf.j2 dest=/etc/httpd/conf.d/pma.conf owner=root group=root mode=644 backup=yes
+  notify: restart httpd
+
+

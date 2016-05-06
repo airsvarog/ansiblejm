@@ -1,0 +1,3 @@
+---
+- name: crond restart
+  service: name=crond state=restarted

@@ -1,0 +1,52 @@
+---
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Configure Elasticsearch.
+  lineinfile: >
+    dest=/etc/elasticsearch/elasticsearch.yml
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+  with_items:
+    - { regexp: '^script\.disable_dynamic', line: 'script.disable_dynamic: true' }
+    - { regexp: 'bootstrap\.mlockall', line: 'bootstrap.mlockall: true' }
+    - { regexp: 'node\.master', line: 'node.master: true' }
+    - { regexp: 'node\.data', line: 'node.data: true' }
+    - { regexp: 'cluster\.name', line: 'cluster.name: {{ hname }}' }
+  notify: restart elasticsearch
+
+- name: create folders 
+  file: path=/elastic/elasticsearch state=directory owner=elasticsearch group=elasticsearch mode="u=rwx,g=rx,o=rx"
+
+- name: Configure Elasticsearch sysconfig.
+  lineinfile: >
+    dest=/etc/sysconfig/elasticsearch
+    regexp="{{ item.regexp }}"
+    line="{{ item.line }}"
+    state=present
+  with_items:
+    - { regexp: '^ES_HEAP_SIZE', line: 'ES_HEAP_SIZE=16g' }
+    - { regexp: '^ES_HEAP_NEWSIZE', line: 'ES_HEAP_NEWSIZE=2g' }
+    - { regexp: '^ES_DIRECT_SIZE', line: 'ES_DIRECT_SIZE=16g' }
+    - { regexp: '^MAX_OPEN_FILES', line: 'MAX_OPEN_FILES=65535' }
+    - { regexp: '^MAX_MAP_COUNT', line: 'MAX_MAP_COUNT=262144' }
+    - { regexp: '^DATA_DIR', line: 'DATA_DIR=/elastic/elasticsearch' }
+    - { regexp: '^WORK_DIR', line: 'WORK_DIR=/tmp/elasticsearch' }
+  notify: restart elasticsearch
+
+- name: Check if plugin alrady installed 
+  stat: path=/usr/share/elasticsearch/plugins/bigdesk
+  register: check_plugin
+
+- name: Install monitoring plugin
+  command: /usr/share/elasticsearch/bin/plugin -install lukas-vlcek/bigdesk
+  args:
+   chdir: /usr/share/elasticsearch/bin/
+  when: check_plugin.stat.exists == False
+
+- name: Start Elasticsearch.
+  service: name=elasticsearch state=started enabled=yes

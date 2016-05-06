@@ -1,0 +1,110 @@
+/var/log/httpd/*log 
+/www/{{ siteurl }}/logs/*log
+
+{
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /sbin/service httpd reload > /dev/null 2>/dev/null || true
+    endscript
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_detect_profession.log
+{
+    # rotate log files weekly
+    weekly
+    # keep 4 weeks worth of backlogs
+    size 1024M
+    rotate 4
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_import_research.log
+{
+    # rotate log files weekly
+    weekly
+    # keep 4 weeks worth of backlogs
+    size 1024M
+    rotate 4
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_deactivate.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_detect_category.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_import_extraction.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_import_stellenanzeigen.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_recurring.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}
+
+/www/{{ siteurl }}/httpdocs/protected/runtime/cron_recurring_check.log
+{
+    # rotate log files monthly
+    monthly
+    # keep 4 weeks worth of backlogs
+    rotate 2
+    compress
+    create 0644 jobscapausr apache
+    missingok
+    notifempty
+}

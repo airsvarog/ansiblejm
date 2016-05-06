@@ -1,0 +1,49 @@
+###			###
+#  SAS server on hatzner  #
+###			###
+
+
+##SAS01: HETZNER: specialjobsuk.com##
+[jmstandalone]
+specialjobsuk.com ansible_ssh_port=5012 ansible_ssh_host=78.46.44.236 ansible_ssh_user=root
+
+##SAS02: HETZNER: specialjobsbe.com##
+[specialjobsbe]
+specialjobsbe.com ansible_ssh_port=5012 ansible_ssh_host=78.47.117.150 ansible_ssh_user=root
+
+##SAS03: HETZNER: jobmonitor.com (ex-staging)##
+[jobmonitor]
+jobmonitor.com ansible_ssh_port=22 ansible_ssh_host=78.46.57.30 ansible_ssh_user=root
+
+##SAS04: HETZNER: greatukjobs.com##
+[greatukjobs]
+greatukjobs.com ansible_ssh_port=5012 ansible_ssh_host=136.243.55.91 ansible_ssh_user=root
+
+##SAS05: HETZNER: superjobsuk.com##
+[superjobsuk]
+superjobsuk.com ansible_ssh_port=5012 ansible_ssh_host=148.251.122.40 ansible_ssh_user=root
+
+##SAS06: HETZNER: jobscale.org##
+[jobscale]
+jobscale.org ansible_ssh_port=5012 ansible_ssh_host=136.243.62.200 ansible_ssh_user=root
+
+##SAS07: HETZNER: jobscapa.com##
+[jobscapa]
+jobscapa.com ansible_ssh_port=5012 ansible_ssh_host=78.46.95.184 ansible_ssh_user=root
+
+##SAS08: HETZNER: jobsbritannia.com##
+[jobsbritannia]
+jobsbritannia.com ansible_ssh_port=5012 ansible_ssh_host=213.239.208.7 ansible_ssh_user=root
+
+##SAS09: HETZNER: gigajobs.com##
+[gigajobs]
+gigajobs.com ansible_ssh_port=5012 ansible_ssh_host=5.9.68.104 ansible_ssh_user=root
+
+##SAS10: HETZNER: jobscapa.org##
+[jobscapaorg]
+jobscapa.org ansible_ssh_port=5012 ansible_ssh_host=148.251.52.146 ansible_ssh_user=root
+
+##SAS11: HETZNER: superusajobs.com##
+[superusajobs]
+superusajobs.com ansible_ssh_port=5012 ansible_ssh_host=148.251.9.74 ansible_ssh_user=root
+

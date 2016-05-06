@@ -1,0 +1,6 @@
+---
+- name: clone from hgadmin
+  hg: repo=http://admin:qwerty123@hgadmin.devplatform1.com/jobmonitor dest=/www/{{ siteurl }}/httpdocs purge=no
+
+- name: change file ownership, group and mode
+  file: path=/www/{{ siteurl }}/httpdocs state=directory recurse=yes owner={{ hname }} group={{ hname }} mode="u=rwx,g=rx,o=rx"
